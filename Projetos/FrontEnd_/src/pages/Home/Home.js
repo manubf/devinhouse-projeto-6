@@ -45,6 +45,8 @@ export function Home() {
   });
   const [inputSearch, setInputSearch] = useState(undefined);
 
+  // const { getProcess } = useAxios();
+
   detail.appears &&
     window.scroll({
       top: 0,
@@ -52,6 +54,8 @@ export function Home() {
     });
 
   useEffect(() => {
+    // getProcess().then((resp) => console.log(resp)
+
     // ProcessoService.buscaProcessos().then((response) => {
     setLoading(false);
     //   setProcessos(response);
@@ -80,7 +84,7 @@ export function Home() {
       })
     : processos; // [];
 
-  // const axiosInstance = useAxios("http://localhost:8080"); // BACKEND 1
+  // const axiosInstance = useAxios();
 
   // const callApi = useCallback(() => {
   // 	!!axiosInstance.current && axiosInstance.current.get("/user");
@@ -95,7 +99,6 @@ export function Home() {
           </TextStyled>
 
           <InputSearch
-            marginInput="0 20px"
             inputSearch={inputSearch}
             setInputSearch={setInputSearch}
           />

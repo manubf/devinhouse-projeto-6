@@ -14,7 +14,7 @@
 import { styled } from '@material-ui/core/styles'
 
 export const DivStyled = styled('div') (({ theme }) => ({
-  paddingTop: theme.spacing(18),
+  paddingTop: theme.spacing(9),
   paddingLeft: theme.spacing(4),
   paddingRight: theme.spacing(4),
 }))

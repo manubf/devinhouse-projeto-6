@@ -17,10 +17,11 @@ export const ContentWrapper = styled(({ appears, ...other }) => (
 
 export const TopStyled = styled('div')(({ theme }) => ({
   display: "flex",
+  flexWrap: 'wrap',
   alignItems: 'center',
   
   [theme.breakpoints.up("md")]: {
-    flexWrap: 'wrap',
+    flexWrap: 'nowrap',
   },
 }));
 
@@ -28,20 +29,21 @@ export const TextStyled = styled(Typography)(({ theme }) => ({
   width: '118px',
 
   [theme.breakpoints.up("md")]: {
-    width: '100%',
+    width: '50%',
     marginBottom: '10px',
     textAlign: 'center',
   },
 }));
 
 export const ButtonStyled = styled(Button)(({ theme }) => ({
-  width: '136px',
-  height: '49px',
-  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+  width: '118px',
+  // height: '49px',
+  // boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
   color: '#757575',
 
   [theme.breakpoints.up("md")]: {
-    margin: '5px auto 0',
+    width: '50%',
+    margin: '5px auto 10px',
   },
 }));
 

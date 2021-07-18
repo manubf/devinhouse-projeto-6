@@ -13,7 +13,7 @@ import {
 export function InputSearch({
   // inputClick,
   // inconClick,
-  marginInput, // ver se vai precisar mesmo
+  // marginInput, // ver se vai precisar mesmo
   inputSearch,
   setInputSearch,
 }) {
@@ -30,7 +30,7 @@ export function InputSearch({
   // };
 
   return (
-    <PaperStyled component="form" margininput={marginInput}>
+    <PaperStyled component="form">
       <InputBaseStyled
         placeholder="Pesquise por uma informação do processo"
         value={inputSearch || ""}
