@@ -17,7 +17,7 @@ export function Process({ process, setDetail, detail }) {
     <ProcessWrapper
       onClick={() =>
         setDetail({
-          appears: !detail?.appears, // true
+          appears: true,
           processClicked: process,
         })
       }

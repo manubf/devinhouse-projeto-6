@@ -1,5 +1,5 @@
 import { styled } from "@material-ui/core/styles";
-import { Paper, Typography } from "@material-ui/core";
+import { Paper, Typography, Button } from "@material-ui/core";
 
 export const ProcessDetailWrapper = styled(Paper)(({ theme }) => ({
   width: "100%",
@@ -57,16 +57,11 @@ export const ButtonsWrapper = styled(DivStyled)(({ theme }) => ({
   display: "flex",
   justifyContent: "flex-end",
   alignItems: "center",
-  marginTop: "25px",
+  marginTop: theme.spacing(3),
   marginBottom: "0",
 }));
 
-// .remove {
-//   color: #757575;
-// }
-
-// button {
-//   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-//   padding: 9px;
-//   width: 136px;
-// }
+export const ButtonStyled = styled(Button)(({ theme }) => ({
+  width: '136px',
+  marginLeft: theme.spacing(1),
+}));

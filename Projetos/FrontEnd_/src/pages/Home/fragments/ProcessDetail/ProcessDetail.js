@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 // import ProcessoService from "../../service";
 
-import { Typography, Button } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import {
   ProcessDetailWrapper,
   ImgClose,
@@ -15,12 +15,13 @@ import {
   SubjectStyled,
   InterestedStyled,
   ButtonsWrapper,
+  ButtonStyled,
 } from "./ProcessDetail.styles";
 
 import processImg from "../../../../assets/process-fake.png";
 import loadingImg from "../../../../assets/loading2.gif";
 import closeIcon from "../../../../assets/close.png";
-// import MessageAlert from "../MessageAlert";
+import { MessageAlert } from "../../../../components"
 
 export function ProcessDetail({ id, setDetail, setOpen, setProcessos }) {
   const [loading, setLoading] = useState(true);
@@ -43,15 +44,16 @@ export function ProcessDetail({ id, setDetail, setOpen, setProcessos }) {
     //     });
     //   })
     //   .then(() =>
-    setDetail({
-      processClicked: undefined,
-      appears: false,
-    });
+    // setDetail({
+    //   processClicked: undefined,
+    //   appears: false,
+    // });
     //   );
     setAlert(true);
   };
 
   return loading ? (
+    // TODO: colocar skeleton
     <img src={loadingImg} alt="loading" />
   ) : (
     <>
@@ -103,24 +105,24 @@ export function ProcessDetail({ id, setDetail, setOpen, setProcessos }) {
         </div>
 
         <ButtonsWrapper>
-          <Button variant="outlined" onClick={removeProcess} className="remove">
+          <ButtonStyled variant="outlined" onClick={removeProcess} className="remove">
             Remover
-          </Button>
-          <Button
+          </ButtonStyled>
+          <ButtonStyled
             variant="outlined"
             onClick={() => setOpen(true)}
             color="primary"
           >
             Editar
-          </Button>
+          </ButtonStyled>
         </ButtonsWrapper>
       </ProcessDetailWrapper>
 
-      {/* <MessageAlert
+      <MessageAlert
         alert={alert}
         setAlert={setAlert}
         message="Processo deletado com sucesso!"
-      /> */}
+      />
     </>
   );
 }

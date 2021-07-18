@@ -10,7 +10,7 @@ export const ProcessWrapper = styled(({ appears, ...other }) => (
   flexWrap: "wrap",
 }));
 
-export const ImgStyled = styled(({ appears, ...other }) => <img {...other} />)({
+export const ImgStyled = styled(({ appears, ...other }) => <img {...other} alt="" />)({
   alignSelf: "center",
   width: "84px",
   height: "84px",

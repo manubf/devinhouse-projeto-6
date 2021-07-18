@@ -1,5 +1,6 @@
 export * from './Navbar'
 export * from './SnackbarCloseButton'
+export * from './MessageAlert'
 // export * from './Search'
 // export * from './AvatarInfo'
 // export * from './CardContainer'

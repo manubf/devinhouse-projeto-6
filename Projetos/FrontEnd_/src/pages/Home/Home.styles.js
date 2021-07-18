@@ -1,4 +1,5 @@
 import { styled } from "@material-ui/core/styles";
+import { Typography, Button } from "@material-ui/core"
 
 export const ContentWrapper = styled(({ appears, ...other }) => (
   <div {...other} />
@@ -11,6 +12,36 @@ export const ContentWrapper = styled(({ appears, ...other }) => (
   [theme.breakpoints.up("md")]: {
     margin: (props) => (props.appears ? "0 50px" : "0 120px"),
     flexDirection: "row",
+  },
+}));
+
+export const TopStyled = styled('div')(({ theme }) => ({
+  display: "flex",
+  alignItems: 'center',
+  
+  [theme.breakpoints.up("md")]: {
+    flexWrap: 'wrap',
+  },
+}));
+
+export const TextStyled = styled(Typography)(({ theme }) => ({
+  width: '118px',
+
+  [theme.breakpoints.up("md")]: {
+    width: '100%',
+    marginBottom: '10px',
+    textAlign: 'center',
+  },
+}));
+
+export const ButtonStyled = styled(Button)(({ theme }) => ({
+  width: '136px',
+  height: '49px',
+  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+  color: '#757575',
+
+  [theme.breakpoints.up("md")]: {
+    margin: '5px auto 0',
   },
 }));
 

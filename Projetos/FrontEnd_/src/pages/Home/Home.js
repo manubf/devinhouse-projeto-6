@@ -1,19 +1,35 @@
 import React, { useEffect, useState } from "react";
-// import { useKeycloak } from "@react-keycloak/web";
 import Skeleton from "@material-ui/lab/Skeleton";
+import { Box } from "@material-ui/core";
 
 // import { useAxios } from "../../utils/hooks";
-import { ContentWrapper, DetailWrapper, ProcessWrapper } from "./Home.styles";
-import { Process, ProcessDetail } from "./fragments";
+// import ProcessoService from "../../service";
+
+import {
+  ContentWrapper,
+  DetailWrapper,
+  ProcessWrapper,
+  TopStyled,
+  TextStyled,
+  ButtonStyled
+} from "./Home.styles";
+import {
+  Process,
+  ProcessDetail,
+  CreateEditProcess,
+  InputSearch,
+} from "./fragments";
 
 export function Home() {
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false); // mudar pra true
+  const [loading, setLoading] = useState(true);
   const [processos, setProcessos] = useState([
     {
       numero: 123,
-      descricao: "auhauah uhauhauha skoskodkdo haiuhsijd jdosjkmsnssfjkf hfshiihifhifhf ojokopk",
-      assunto: "auhauah uhauhauha skoskodkdo haiuhsijd jdosjkmsnssfjkf hfshiihifhifhf ojokopk",
+      descricao:
+        "auhauah uhauhauha skoskodkdo haiuhsijd jdosjkmsnssfjkf hfshiihifhifhf ojokopk",
+      assunto:
+        "auhauah uhauhauha skoskodkdo haiuhsijd jdosjkmsnssfjkf hfshiihifhifhf ojokopk",
       interessados: ["aaa", "bbbb"],
     },
     {
@@ -27,6 +43,7 @@ export function Home() {
     appears: false,
     processClicked: undefined,
   });
+  const [inputSearch, setInputSearch] = useState(undefined);
 
   detail.appears &&
     window.scroll({
@@ -34,12 +51,34 @@ export function Home() {
       behavior: "smooth",
     });
 
-  // useEffect(() => {
-  // ProcessoService.buscaProcessos().then((response) => {
-  //   setLoading(false);
-  //   setProcessos(response);
-  // });
-  // }, []);
+  useEffect(() => {
+    // ProcessoService.buscaProcessos().then((response) => {
+    setLoading(false);
+    //   setProcessos(response);
+    // });
+  }, []);
+
+  const formatString = (text) =>
+    text
+      ?.toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
+  const result = inputSearch
+    ? processos.filter((item) => {
+        const formatInput = formatString(inputSearch);
+        const numero = formatString(item?.numero.toString())?.includes(
+          formatInput
+        );
+        const entrada = formatString(item?.entrada)?.includes(formatInput);
+        const descricao = formatString(item?.descricao)?.includes(formatInput);
+        const assunto = formatString(item?.assunto)?.includes(formatInput);
+        const interessados = item.interessados.filter((interessado) =>
+          formatString(interessado)?.includes(formatInput)
+        );
+        return numero || entrada || descricao || assunto || interessados[0];
+      })
+    : processos; // [];
 
   // const axiosInstance = useAxios("http://localhost:8080"); // BACKEND 1
 
@@ -47,10 +86,36 @@ export function Home() {
   // 	!!axiosInstance.current && axiosInstance.current.get("/user");
   // }, [axiosInstance]);
 
-  const result = processos; // mudar pra filtrados
-
   return (
     <>
+      <Box m={4}>
+        <TopStyled>
+          <TextStyled variant="h2">
+            Busca de processos
+          </TextStyled>
+
+          <InputSearch
+            marginInput="0 20px"
+            inputSearch={inputSearch}
+            setInputSearch={setInputSearch}
+          />
+
+          <ButtonStyled
+            variant="outlined"
+            className="novo"
+            onClick={() => {
+              setDetail({
+                appears: false,
+                processClicked: undefined,
+              });
+              setOpen(true);
+            }}
+          >
+            Novo
+          </ButtonStyled>
+        </TopStyled>
+      </Box>
+
       {loading ? (
         <Skeleton
           animation="wave"
@@ -73,15 +138,23 @@ export function Home() {
           {detail.appears && (
             <DetailWrapper>
               <ProcessDetail
-                  id={detail?.processClicked.id}
-                  setDetail={setDetail}
-                  setOpen={setOpen}
-                  setProcessos={setProcessos}
-                />
+                id={detail?.processClicked.id}
+                setDetail={setDetail}
+                setOpen={setOpen}
+                setProcessos={setProcessos}
+              />
             </DetailWrapper>
           )}
         </ContentWrapper>
       )}
+
+      <CreateEditProcess
+        open={open}
+        setOpen={setOpen}
+        processToEdit={detail.processClicked}
+        setProcessos={setProcessos}
+        setDetail={setDetail}
+      />
     </>
   );
 }
