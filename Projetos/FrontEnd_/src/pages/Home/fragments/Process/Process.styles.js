@@ -1,8 +1,8 @@
 import { styled } from "@material-ui/core/styles";
-import { Paper, Typography } from "@material-ui/core";
+import { Card, Typography } from "@material-ui/core";
 
 export const ProcessWrapper = styled(({ appears, ...other }) => (
-  <Paper {...other} />
+  <Card {...other} />
 ))(({ theme }) => ({
   marginBottom: theme.spacing(4),
   padding: theme.spacing(2),
@@ -10,22 +10,24 @@ export const ProcessWrapper = styled(({ appears, ...other }) => (
   flexWrap: "wrap",
 }));
 
-export const ImgStyled = styled(({ appears, ...other }) => <img {...other} alt="" />)({
+export const ImgStyled = styled(({ appears, ...other }) => (
+  <img {...other} alt="" />
+))(({ theme }) => ({
   alignSelf: "center",
   width: "84px",
   height: "84px",
-  marginRight: "16px", //
-  display: (props) => props.appears === "true" && "none",
-});
+  marginRight: theme.spacing(2),
+  display: (props) => !!props.appears && "none",
+}));
 
 export const DivStyled = styled(({ appears, ...other }) => <div {...other} />)(
   ({ theme }) => ({
-    marginTop: (props) => (props.appears === "true" ? "10px" : "30px"), //
-    marginRight: "16px",
+    marginTop: (props) => (!!props.appears ? "10px" : "30px"), //
+    marginRight: theme.spacing(2),
     width: "100%",
 
     [theme.breakpoints.up("md")]: {
-      width: (props) => (props.appears === "true" ? "42%" : "19%"),
+      width: (props) => (!!props.appears ? "42%" : "19%"),
     },
   })
 );
@@ -33,23 +35,22 @@ export const DivStyled = styled(({ appears, ...other }) => <div {...other} />)(
 export const InterestedStyled = styled(({ appears, ...other }) => (
   <DivStyled {...other} />
 ))({
-  width: (props) => (props.appears === "true" ? "90%" : "20%"),
+  width: (props) => (!!props.appears ? "90%" : "20%"),
 });
 
 export const DescriptionStyled = styled(({ appears, ...other }) => (
   <DivStyled {...other} />
 ))({
-  display: (props) => props.appears === "true" && "none",
+  display: (props) => !!props.appears && "none",
 });
-
 
 export const TitleStyled = styled(({ appears, ...other }) => (
   <Typography {...other} />
 ))(({ theme }) => ({
-  marginBottom: (props) => (props.appears === "false" && "14px"),
+  marginBottom: (props) => !props.appears && theme.spacing(2),
 
   [theme.breakpoints.up("md")]: {
-    marginBottom: '5px',
+    marginBottom: theme.spacing(1),
   },
 }));
 
@@ -59,7 +60,7 @@ export const TextStyled = styled(({ appears, ...other }) => (
   whiteSpace: "nowrap",
   overflow: "hidden",
   textOverflow: "ellipsis",
-  maxWidth: (props) => (props.appears === "true" ? "15vw" : "18vw"),
+  maxWidth: (props) => (!!props.appears ? "15vw" : "18vw"),
 
   [theme.breakpoints.up("md")]: {
     maxWidth: "100%",

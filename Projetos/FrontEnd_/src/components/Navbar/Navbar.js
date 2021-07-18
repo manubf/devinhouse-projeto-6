@@ -60,11 +60,11 @@ export const NavBar = () => {
             onClose={handleCloseMenu}
           />
 
-          <Typography variant="h4"  className={classes.title}>
+          <Typography variant="h1"  className={classes.title}>
             Gerenciador de Processos
           </Typography>
 
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="body1" className={classes.title}>
             Olá {userName}!
           </Typography>
 

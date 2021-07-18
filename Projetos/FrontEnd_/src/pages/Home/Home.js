@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Skeleton from "@material-ui/lab/Skeleton";
 import { Box } from "@material-ui/core";
 
 // import { useAxios } from "../../utils/hooks";
@@ -11,7 +10,7 @@ import {
   ProcessWrapper,
   TopStyled,
   TextStyled,
-  ButtonStyled
+  ButtonStyled,
 } from "./Home.styles";
 import {
   Process,
@@ -38,6 +37,7 @@ export function Home() {
       assunto: "assunto 2",
       interessados: ["cccc", "ddddd"],
     },
+    {},
   ]);
   const [detail, setDetail] = useState({
     appears: false,
@@ -55,7 +55,6 @@ export function Home() {
 
   useEffect(() => {
     // getProcess().then((resp) => console.log(resp)
-
     // ProcessoService.buscaProcessos().then((response) => {
     setLoading(false);
     //   setProcessos(response);
@@ -94,9 +93,7 @@ export function Home() {
     <>
       <Box m={4}>
         <TopStyled>
-          <TextStyled variant="h2">
-            Busca de processos
-          </TextStyled>
+          <TextStyled variant="h2">Busca de processos</TextStyled>
 
           <InputSearch
             inputSearch={inputSearch}
@@ -119,37 +116,30 @@ export function Home() {
         </TopStyled>
       </Box>
 
-      {loading ? (
-        <Skeleton
-          animation="wave"
-          height={10}
-          width="100%"
-          style={{ marginBottom: 6 }}
-        />
-      ) : (
-        <ContentWrapper appears={detail.appears}>
-          <ProcessWrapper appears={detail.appears}>
-            {result?.map((process) => (
-              <Process
-                key={process.id}
-                process={process}
-                setDetail={setDetail}
-                detail={detail}
-              />
-            ))}
-          </ProcessWrapper>
-          {detail.appears && (
-            <DetailWrapper>
-              <ProcessDetail
-                id={detail?.processClicked.id}
-                setDetail={setDetail}
-                setOpen={setOpen}
-                setProcessos={setProcessos}
-              />
-            </DetailWrapper>
-          )}
-        </ContentWrapper>
-      )}
+      <ContentWrapper appears={detail.appears}>
+        <ProcessWrapper appears={detail.appears}>
+          {result?.map((process) => (
+            <Process
+              loading={loading}
+              key={process.id}
+              process={process}
+              setDetail={setDetail}
+              detail={detail}
+            />
+          ))}
+        </ProcessWrapper>
+
+        {detail.appears && (
+          <DetailWrapper>
+            <ProcessDetail
+              id={detail?.processClicked.id}
+              setDetail={setDetail}
+              setOpen={setOpen}
+              setProcessos={setProcessos}
+            />
+          </DetailWrapper>
+        )}
+      </ContentWrapper>
 
       <CreateEditProcess
         open={open}

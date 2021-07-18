@@ -5,7 +5,6 @@ export const ContentWrapper = styled(({ appears, ...other }) => (
   <div {...other} />
 ))(({ theme }) => ({
   display: "flex",
-  
   margin: "0 20px",
   flexDirection: "column-reverse",
   
@@ -30,16 +29,13 @@ export const TextStyled = styled(Typography)(({ theme }) => ({
 
   [theme.breakpoints.up("md")]: {
     width: '50%',
-    marginBottom: '10px',
+    marginBottom: theme.spacing(1),
     textAlign: 'center',
   },
 }));
 
 export const ButtonStyled = styled(Button)(({ theme }) => ({
   width: '118px',
-  // height: '49px',
-  // boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-  color: '#757575',
 
   [theme.breakpoints.up("md")]: {
     width: '50%',
@@ -61,9 +57,9 @@ export const ProcessWrapper = styled(({ appears, ...other }) => (
 
 export const DetailWrapper = styled('div')(({ theme }) => ({
   width: "100%",
-  marginBottom: '20px', //
+  marginBottom: theme.spacing(2),
   
   [theme.breakpoints.up("md")]: {
-    marginLeft: '30px',
+    marginLeft: theme.spacing(4),
   },
 }));

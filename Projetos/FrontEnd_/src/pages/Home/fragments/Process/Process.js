@@ -8,9 +8,11 @@ import {
   TitleStyled,
   DescriptionStyled,
 } from "./Process.styles";
+import Skeleton from "@material-ui/lab/Skeleton";
+
 import processImg from "../../../../assets/process-fake.png";
 
-export function Process({ process, setDetail, detail }) {
+export function Process({ process, setDetail, detail, loading }) {
   const { numero, descricao, assunto, interessados } = process;
 
   return (
@@ -21,32 +23,46 @@ export function Process({ process, setDetail, detail }) {
           processClicked: process,
         })
       }
-      appears={detail?.appears?.toString()}
+      appears={detail?.appears}
     >
-      <ImgStyled
-        alt="processo"
-        src={processImg}
-        appears={detail?.appears?.toString()}
-      />
+      {loading ? (
+        <Skeleton
+          animation="wave"
+          variant="circle"
+          width={!detail?.appears ? 84 : 0}
+          height={!detail?.appears ? 84 : 0}
+          style={{ marginRight: 16 }}
+        />
+      ) : (
+        <ImgStyled alt="processo" src={processImg} appears={detail?.appears} />
+      )}
 
-      <DivStyled appears={detail.appears?.toString()}>
-        <TitleStyled variant="h3">Número</TitleStyled>
-        <Typography>{numero}</Typography>
+      <DivStyled appears={detail.appears}>
+        <TitleStyled variant="h3">
+          {loading ? <Skeleton animation="wave" /> : "Número"}
+        </TitleStyled>
+        <Typography>{loading ? <Skeleton animation="wave" /> : numero}</Typography>
       </DivStyled>
 
-      <DivStyled appears={detail.appears?.toString()}>
-        <TitleStyled variant="h3">Assunto</TitleStyled>
-        <TextStyled>{assunto}</TextStyled>
+      <DivStyled appears={detail.appears}>
+        <TitleStyled variant="h3">
+          {loading ? <Skeleton animation="wave" /> : "Assunto"}{" "}
+        </TitleStyled>
+        <TextStyled>{loading ? <Skeleton animation="wave" /> : assunto}</TextStyled>
       </DivStyled>
 
-      <InterestedStyled appears={detail.appears?.toString()}>
-        <TitleStyled variant="h3">Interessado</TitleStyled>
-        <Typography>{interessados[0]}</Typography>
+      <InterestedStyled appears={detail.appears}>
+        <TitleStyled variant="h3">
+          {loading ? <Skeleton animation="wave" /> : "Interessado"}
+        </TitleStyled>
+        <Typography>{loading ? <Skeleton animation="wave" /> : interessados && interessados[0]}</Typography>
       </InterestedStyled>
 
-      <DescriptionStyled appears={detail.appears?.toString()}>
-        <TitleStyled variant="h3">Descrição</TitleStyled>
-        <TextStyled>{descricao}</TextStyled>
+      <DescriptionStyled appears={detail.appears}>
+        <TitleStyled variant="h3">
+          {loading ? <Skeleton animation="wave" /> : "Descrição"}
+        </TitleStyled>
+        <TextStyled>{loading ? <Skeleton animation="wave" /> : descricao}</TextStyled>
       </DescriptionStyled>
     </ProcessWrapper>
   );

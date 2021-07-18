@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-
-// import ProcessoService from "../../service";
-
+import Skeleton from "@material-ui/lab/Skeleton";
 import { Typography } from "@material-ui/core";
 import {
   ProcessDetailWrapper,
@@ -18,10 +16,12 @@ import {
   ButtonStyled,
 } from "./ProcessDetail.styles";
 
+// import ProcessoService from "../../service";
+
 import processImg from "../../../../assets/process-fake.png";
-import loadingImg from "../../../../assets/loading2.gif";
 import closeIcon from "../../../../assets/close.png";
-import { MessageAlert } from "../../../../components"
+
+import { MessageAlert } from "../../../../components";
 
 export function ProcessDetail({ id, setDetail, setOpen, setProcessos }) {
   const [loading, setLoading] = useState(true);
@@ -52,10 +52,7 @@ export function ProcessDetail({ id, setDetail, setOpen, setProcessos }) {
     setAlert(true);
   };
 
-  return loading ? (
-    // TODO: colocar skeleton
-    <img src={loadingImg} alt="loading" />
-  ) : (
+  return (
     <>
       <ProcessDetailWrapper>
         <ImgClose
@@ -71,41 +68,77 @@ export function ProcessDetail({ id, setDetail, setOpen, setProcessos }) {
 
         <TopStyled>
           <div>
-            <ImgStyled alt="processo" src={processImg} />
+            {loading ? (
+              <Skeleton
+                animation="wave"
+                variant="circle"
+                width={120}
+                height={120}
+                style={{ marginRight: 24 }}
+              />
+            ) : (
+              <ImgStyled alt="processo" src={processImg} />
+            )}
           </div>
 
           <TopContentStyled>
-            <ProcessNumberStyled>
-              <TitleStyled variant="h3">Processo</TitleStyled>
-              <Typography variant="h2">{process?.numero}</Typography>
-            </ProcessNumberStyled>
-            <div>
-              <TitleStyled variant="h3">Data</TitleStyled>
-              <Typography variant="h2">{process?.entrada}</Typography>
-            </div>
-            <SubjectStyled>
-              <TitleStyled variant="h3">Assunto</TitleStyled>
-              <Typography variant="h2">{process?.assunto}</Typography>
-            </SubjectStyled>
+            {loading ? (
+              <>
+                <SubjectStyled>
+                  <Skeleton animation="wave" />
+                  <Skeleton animation="wave" />
+                </SubjectStyled>
+                <SubjectStyled>
+                  <Skeleton animation="wave" />
+                  <Skeleton animation="wave" />
+                </SubjectStyled>
+              </>
+            ) : (
+              <>
+                <ProcessNumberStyled>
+                  <TitleStyled variant="h3">Processo</TitleStyled>
+                  <Typography variant="h2">{process?.numero}</Typography>
+                </ProcessNumberStyled>
+
+                <div>
+                  <TitleStyled variant="h3">Data</TitleStyled>
+                  <Typography variant="h2">{process?.entrada}</Typography>
+                </div>
+                <SubjectStyled>
+                  <TitleStyled variant="h3">Assunto</TitleStyled>
+                  <Typography variant="h2">{process?.assunto}</Typography>
+                </SubjectStyled>
+              </>
+            )}
           </TopContentStyled>
         </TopStyled>
 
-        <DivStyled>
-          <TitleStyled variant="h3">Interessados</TitleStyled>
-          <InterestedStyled>
-            {process?.interessados?.map((item, index) => (
-              <Typography key={index}>{item}</Typography>
-            ))}
-          </InterestedStyled>
-        </DivStyled>
+        {!loading && (
+          <DivStyled>
+            <TitleStyled variant="h3">Interessados</TitleStyled>
+            <InterestedStyled>
+              {process?.interessados?.map((item, index) => (
+                <Typography key={index}>{item}</Typography>
+              ))}
+            </InterestedStyled>
+          </DivStyled>
+        )}
 
         <div className="description">
-          <TitleStyled variant="h3">Descrição</TitleStyled>
-          <Typography>{process?.descricao}</Typography>
+          <TitleStyled variant="h3">
+            {loading ? <Skeleton animation="wave" /> : "Descrição"}
+          </TitleStyled>
+          <Typography>
+            {loading ? <Skeleton animation="wave" /> : process?.descricao}
+          </Typography>
         </div>
 
         <ButtonsWrapper>
-          <ButtonStyled variant="outlined" onClick={removeProcess} className="remove">
+          <ButtonStyled
+            variant="outlined"
+            onClick={removeProcess}
+            className="remove"
+          >
             Remover
           </ButtonStyled>
           <ButtonStyled

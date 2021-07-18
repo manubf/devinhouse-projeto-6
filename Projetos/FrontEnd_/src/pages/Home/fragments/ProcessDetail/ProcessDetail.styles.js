@@ -1,7 +1,7 @@
 import { styled } from "@material-ui/core/styles";
-import { Paper, Typography, Button } from "@material-ui/core";
+import { Card, Typography, Button } from "@material-ui/core";
 
-export const ProcessDetailWrapper = styled(Paper)(({ theme }) => ({
+export const ProcessDetailWrapper = styled(Card)(({ theme }) => ({
   width: "100%",
   position: "relative",
   padding: theme.spacing(2),
@@ -19,12 +19,13 @@ export const TitleStyled = styled(Typography)(({ theme }) => ({
 }));
 
 export const DivStyled = styled("div")(({ theme }) => ({
-  marginBottom: theme.spacing(3),
+  marginBottom: theme.spacing(2),
 }));
 
-export const TopStyled = styled(DivStyled)({
+export const TopStyled = styled(DivStyled)(({ theme }) => ({
   display: "flex",
-});
+  marginTop: theme.spacing(1),
+}));
 
 export const ImgStyled = styled("img")(({ theme }) => ({
   height: "120px",
