@@ -21,12 +21,13 @@ import {
 import processImg from "../../../../assets/process-fake.png";
 import closeIcon from "../../../../assets/close.png";
 
-import { MessageAlert } from "../../../../components";
+import { AlertDialog, MessageAlert } from "../../../../components";
 
 export function ProcessDetail({ id, setDetail, setOpen, setProcessos }) {
   const [loading, setLoading] = useState(true);
   const [process, setProcess] = useState({});
-  const [alert, setAlert] = useState(false);
+  const [openMessage, setOpenMessage] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
 
   useEffect(() => {
     // setLoading(true);
@@ -37,21 +38,20 @@ export function ProcessDetail({ id, setDetail, setOpen, setProcessos }) {
   }, [id]);
 
   const removeProcess = () => {
-    // TODO: ADICIONAR UM ALERT DE CONFIRMAÇÃO
-
+    
     // ProcessoService.deletaProcesso(id)
     //   .then(() => {
-    //     ProcessoService.buscaProcessos().then((response) => {
-    //       setProcessos(response);
-    //     });
-    //   })
-    //   .then(() =>
-    // setDetail({
-    //   processClicked: undefined,
-    //   appears: false,
-    // });
-    //   );
-    setAlert(true);
+      //     ProcessoService.buscaProcessos().then((response) => {
+        //       setProcessos(response);
+        //     });
+        //   })
+        //   .then(() =>
+        // setDetail({
+          //   processClicked: undefined,
+          //   appears: false,
+          // });
+          //   );
+    setOpenMessage(true);
   };
 
   return (
@@ -138,7 +138,7 @@ export function ProcessDetail({ id, setDetail, setOpen, setProcessos }) {
         <ButtonsWrapper>
           <ButtonStyled
             variant="outlined"
-            onClick={removeProcess}
+            onClick={() => setOpenAlert(true)}
             className="remove"
           >
             Remover
@@ -154,9 +154,17 @@ export function ProcessDetail({ id, setDetail, setOpen, setProcessos }) {
       </ProcessDetailWrapper>
 
       <MessageAlert
-        alert={alert}
-        setAlert={setAlert}
+        openMessage={openMessage}
+        setOpenMessage={setOpenMessage}
         message="Processo deletado com sucesso!"
+      />
+
+      <AlertDialog
+        openAlert={openAlert}
+        setOpenAlert={setOpenAlert}
+        title="Deletar processo"
+        text="A ação não pode ser desfeita. Tem certeza que deseja deletar este processo?"
+        confirmAction={removeProcess}
       />
     </>
   );

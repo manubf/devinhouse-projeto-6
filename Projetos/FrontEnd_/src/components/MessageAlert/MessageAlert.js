@@ -5,14 +5,22 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-export function MessageAlert({ alert, setAlert, message, severity}) {
+export function MessageAlert({
+  openMessage,
+  setOpenMessage,
+  message,
+  severity,
+}) {
   return (
     <Snackbar
-      open={alert}
+      open={openMessage}
       autoHideDuration={4000}
-      onClose={() => setAlert(false)}
+      onClose={() => setOpenMessage(false)}
     >
-      <Alert onClose={() => setAlert(false)} severity={severity ? severity : "success"}>
+      <Alert
+        onClose={() => setOpenMessage(false)}
+        severity={severity ? severity : "success"}
+      >
         {message}.
       </Alert>
     </Snackbar>
