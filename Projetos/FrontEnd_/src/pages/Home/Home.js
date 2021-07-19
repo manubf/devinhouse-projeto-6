@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Box } from "@material-ui/core";
 
 // import { useAxios } from "../../utils/hooks";
 // import ProcessoService from "../../service";
@@ -44,6 +43,7 @@ export function Home() {
     processClicked: undefined,
   });
   const [inputSearch, setInputSearch] = useState(undefined);
+  const [researchBySubect, setResearchBySubect] = useState(false);
 
   // const { getProcess } = useAxios();
 
@@ -67,6 +67,7 @@ export function Home() {
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "");
 
+  // TODO: essa parte da pesquisa precisa ser refeita, pois dependerá agora de endpoints de pesquisa por número ou assunto
   const result = inputSearch
     ? processos.filter((item) => {
         const formatInput = formatString(inputSearch);
@@ -81,40 +82,38 @@ export function Home() {
         );
         return numero || entrada || descricao || assunto || interessados[0];
       })
-    : processos; // [];
+    : processos; // [];  sem pesquisa talvez deixar vazio e mostrar uma mensagem
 
   // const axiosInstance = useAxios();
-
   // const callApi = useCallback(() => {
   // 	!!axiosInstance.current && axiosInstance.current.get("/user");
   // }, [axiosInstance]);
 
   return (
     <>
-      <Box m={4}>
-        <TopStyled>
-          <TextStyled variant="h2">Busca de processos</TextStyled>
+      <TopStyled>
+        <TextStyled variant="h2">Cadastrar processo:</TextStyled>
 
-          <InputSearch
-            inputSearch={inputSearch}
-            setInputSearch={setInputSearch}
-          />
+        <ButtonStyled
+          variant="outlined"
+          onClick={() => {
+            setDetail({
+              appears: false,
+              processClicked: undefined,
+            });
+            setOpen(true);
+          }}
+        >
+          Novo
+        </ButtonStyled>
+      </TopStyled>
 
-          <ButtonStyled
-            variant="outlined"
-            className="novo"
-            onClick={() => {
-              setDetail({
-                appears: false,
-                processClicked: undefined,
-              });
-              setOpen(true);
-            }}
-          >
-            Novo
-          </ButtonStyled>
-        </TopStyled>
-      </Box>
+      <InputSearch
+        inputSearch={inputSearch}
+        setInputSearch={setInputSearch}
+        researchBySubect={researchBySubect}
+        setResearchBySubect={setResearchBySubect}
+      />
 
       <ContentWrapper appears={detail.appears}>
         <ProcessWrapper appears={detail.appears}>

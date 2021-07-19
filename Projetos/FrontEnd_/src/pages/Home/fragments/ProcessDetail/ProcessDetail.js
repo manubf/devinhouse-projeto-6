@@ -37,6 +37,8 @@ export function ProcessDetail({ id, setDetail, setOpen, setProcessos }) {
   }, [id]);
 
   const removeProcess = () => {
+    // TODO: ADICIONAR UM ALERT DE CONFIRMAÇÃO
+
     // ProcessoService.deletaProcesso(id)
     //   .then(() => {
     //     ProcessoService.buscaProcessos().then((response) => {

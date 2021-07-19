@@ -18,28 +18,33 @@ export const TopStyled = styled('div')(({ theme }) => ({
   display: "flex",
   flexWrap: 'wrap',
   alignItems: 'center',
+  justifyContent: 'center',
   
   [theme.breakpoints.up("md")]: {
+    padding: "12px 100px",
+    width: '100%',
     flexWrap: 'nowrap',
   },
 }));
 
 export const TextStyled = styled(Typography)(({ theme }) => ({
-  width: '118px',
-
+  width: '100%',
+  marginBottom: theme.spacing(1),
+  textAlign: 'center',
+  
   [theme.breakpoints.up("md")]: {
-    width: '50%',
-    marginBottom: theme.spacing(1),
-    textAlign: 'center',
+    width: '30%',
   },
 }));
 
 export const ButtonStyled = styled(Button)(({ theme }) => ({
-  width: '118px',
-
+  width: '70%',
+  margin: theme.spacing(1),
+  
   [theme.breakpoints.up("md")]: {
-    width: '50%',
-    margin: '5px auto 10px',
+    width: '30%',
+    margin: '0 50px',
+    marginBottom: theme.spacing(1),
   },
 }));
 

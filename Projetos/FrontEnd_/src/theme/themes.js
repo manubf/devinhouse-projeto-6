@@ -10,7 +10,7 @@ const typography = {
   h2: {
     fontSize: "20px",
     lineHeight: "29px",
-    fontWeight: "normal",
+    fontWeight: "bold",
   },
   h3: {
     fontSize: "14px",
