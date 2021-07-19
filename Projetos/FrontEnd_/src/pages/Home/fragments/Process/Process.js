@@ -13,7 +13,7 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import processImg from "../../../../assets/process-fake.png";
 
 export function Process({ process, setDetail, detail, loading }) {
-  const { numero, descricao, assunto, interessados } = process;
+  const { nuProcesso, descricao, cdAssunto, cdInteressado } = process;
 
   return (
     <ProcessWrapper
@@ -41,21 +41,21 @@ export function Process({ process, setDetail, detail, loading }) {
         <TitleStyled variant="h3">
           {loading ? <Skeleton animation="wave" /> : "Número"}
         </TitleStyled>
-        <Typography>{loading ? <Skeleton animation="wave" /> : numero}</Typography>
+        <Typography>{loading ? <Skeleton animation="wave" /> : nuProcesso}</Typography>
       </DivStyled>
 
       <DivStyled appears={detail.appears}>
         <TitleStyled variant="h3">
           {loading ? <Skeleton animation="wave" /> : "Assunto"}{" "}
         </TitleStyled>
-        <TextStyled>{loading ? <Skeleton animation="wave" /> : assunto}</TextStyled>
+        <TextStyled>{loading ? <Skeleton animation="wave" /> : cdAssunto?.descricao}</TextStyled>
       </DivStyled>
 
       <InterestedStyled appears={detail.appears}>
         <TitleStyled variant="h3">
           {loading ? <Skeleton animation="wave" /> : "Interessado"}
         </TitleStyled>
-        <Typography>{loading ? <Skeleton animation="wave" /> : interessados && interessados[0]}</Typography>
+        <Typography>{loading ? <Skeleton animation="wave" /> : cdInteressado?.nmInteressado}</Typography>
       </InterestedStyled>
 
       <DescriptionStyled appears={detail.appears}>

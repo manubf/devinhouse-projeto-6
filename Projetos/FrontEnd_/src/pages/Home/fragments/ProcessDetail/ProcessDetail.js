@@ -99,7 +99,7 @@ export function ProcessDetail({ id, setDetail, setOpen, setProcessos }) {
               <>
                 <ProcessNumberStyled>
                   <TitleStyled variant="h3">Processo</TitleStyled>
-                  <Typography variant="h2">{process?.numero}</Typography>
+                  <Typography variant="h2">{process?.nuProcesso}</Typography>
                 </ProcessNumberStyled>
 
                 <div>
@@ -108,7 +108,7 @@ export function ProcessDetail({ id, setDetail, setOpen, setProcessos }) {
                 </div>
                 <SubjectStyled>
                   <TitleStyled variant="h3">Assunto</TitleStyled>
-                  <Typography variant="h2">{process?.assunto}</Typography>
+                  <Typography variant="h2">{process?.cdAssunto?.descricao}</Typography>
                 </SubjectStyled>
               </>
             )}
@@ -117,11 +117,9 @@ export function ProcessDetail({ id, setDetail, setOpen, setProcessos }) {
 
         {!loading && (
           <DivStyled>
-            <TitleStyled variant="h3">Interessados</TitleStyled>
+            <TitleStyled variant="h3">Interessado</TitleStyled>
             <InterestedStyled>
-              {process?.interessados?.map((item, index) => (
-                <Typography key={index}>{item}</Typography>
-              ))}
+              <Typography>{process?.cdInteressado?.nmInteressado}</Typography>
             </InterestedStyled>
           </DivStyled>
         )}

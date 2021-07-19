@@ -23,16 +23,42 @@ export function Home() {
   const [loading, setLoading] = useState(true);
   const [processos, setProcessos] = useState([
     {
-      numero: 123,
+      nuProcesso: 123,
       descricao:
         "auhauah uhauhauha skoskodkdo haiuhsijd jdosjkmsnssfjkf hfshiihifhifhf ojokopk",
-      assunto:
-        "auhauah uhauhauha skoskodkdo haiuhsijd jdosjkmsnssfjkf hfshiihifhifhf ojokopk",
-      interessados: ["aaa", "bbbb"],
+      cdAssunto: {
+        descricao:
+          "auhauah uhauhauha skoskodkdo haiuhsijd jdosjkmsnssfjkf hfshiihifhifhf ojokopk",
+      },
+      cdInteressado: {
+        nmInteressado: "aaa",
+      },
     },
+    //   {
+    //     "id": 1,
+    //     "nuProcesso": 1,
+    //     "sgOrgaoSetor": "SOFT",
+    //     "nuAno": "2010",
+    //     "chaveProcesso": "SOFT 1/2010",
+    //     "descricao": "Processo 1 de testes DEV In House ",
+    //     "cdAssunto": {
+    //       "id": 1,
+    //       "descricao": "Autorização para Corte de Árvores - Área Pública",
+    //       "dtCadastro": "2021-07-17",
+    //       "flAtivo": "s"
+    //     },
+    //     "cdInteressado": {
+    //       "id": 2,
+    //       "nmInteressado": "Amanda da gata Mel",
+    //       "nuIdentificacao": "62560244004",
+    //       "dtNascimento": "2000-08-05",
+    //       "flAtivo": "s"
+    //     }
+    //   },
     {},
     {},
   ]);
+
   const [detail, setDetail] = useState({
     appears: false,
     processClicked: undefined,
@@ -44,12 +70,9 @@ export function Home() {
 
   useEffect(() => {
     getEndpoint("/processos").then((resp) => {
-      console.log(resp);
-      //   setProcessos(response);
+      setProcessos(resp);
       setLoading(false);
     });
-    // ProcessoService.buscaProcessos().then((response) => {
-    // });
   }, [getEndpoint]);
 
   const formatString = (text) =>
@@ -62,16 +85,17 @@ export function Home() {
   const result = inputSearch
     ? processos.filter((item) => {
         const formatInput = formatString(inputSearch);
-        const numero = formatString(item?.numero.toString())?.includes(
+        const nuProcesso = formatString(item?.nuProcesso.toString())?.includes(
           formatInput
         );
         const entrada = formatString(item?.entrada)?.includes(formatInput);
         const descricao = formatString(item?.descricao)?.includes(formatInput);
-        const assunto = formatString(item?.assunto)?.includes(formatInput);
-        const interessados = item.interessados.filter((interessado) =>
-          formatString(interessado)?.includes(formatInput)
+        const assunto = formatString(item?.cdAssunto?.descricao)?.includes(
+          formatInput
         );
-        return numero || entrada || descricao || assunto || interessados[0];
+        const interessado =
+          item.cdInteressado?.nmInteressado?.includes(formatInput);
+        return nuProcesso || entrada || descricao || assunto || interessado;
       })
     : processos; // [];  sem pesquisa talvez deixar vazio e mostrar uma mensagem
 

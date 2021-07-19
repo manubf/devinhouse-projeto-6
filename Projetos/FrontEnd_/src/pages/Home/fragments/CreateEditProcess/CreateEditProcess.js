@@ -19,8 +19,8 @@ import { AddInterested } from './fragments'
 
 export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, setDetail }) {
   const [inputs, setInputs] = useState({
-    assunto: processToEdit ? processToEdit.assunto : "",
-    interessados: processToEdit ? processToEdit.interessados : [],
+    assunto: processToEdit ? processToEdit.cdAssunto.descricao : "",
+    interessado: processToEdit ? processToEdit.cdInteressado.nmInteressado : "",
     descricao: processToEdit ? processToEdit.descricao : "",
   });
   const [alert, setAlert] = useState(false);
@@ -28,8 +28,8 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
   useEffect(() => {
     if (processToEdit) {
       setInputs({
-        assunto: processToEdit.assunto,
-        interessados: processToEdit.interessados,
+        assunto: processToEdit.cdAssunto.descricao,
+        interessado: processToEdit.cdInteressado.nmInteressado,
         descricao: processToEdit.descricao,
       });
     }
@@ -37,7 +37,7 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
     return () =>
       setInputs({
         assunto: "",
-        interessados: [],
+        interessado: "",
         descricao: "",
       });
   }, [processToEdit]);
@@ -50,7 +50,7 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
   };
 
   const saveProcess = () => {
-    const { assunto, interessados, descricao } = inputs;
+    const { assunto, interessado, descricao } = inputs;
     const numero = `SOFT 2021/${Math.ceil(
       Math.random() * (1 - 99999) + 99999
     )}`;
@@ -58,12 +58,12 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
       const itemToEdit = {
         descricao,
         assunto,
-        interessados,
+        interessado,
       };
       setInputs({
         descricao,
         assunto,
-        interessados,
+        interessado,
       });
       // ProcessoService.editaProcesso(processToEdit.id, itemToEdit).then(() =>
       //   ProcessoService.buscaProcessos().then((response) =>
@@ -78,7 +78,7 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
         numero,
         descricao,
         assunto,
-        interessados,
+        interessado,
       };
       // ProcessoService.adicionaProcesso(item).then(() =>
       //   ProcessoService.buscaProcessos().then((response) =>
@@ -110,21 +110,27 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
 
         <DialogContentStyled>
           <Typography variant="body2">Assunto</Typography>
-          <div>
             <TextField
               color="secondary"
               value={inputs.assunto}
               name="assunto"
               onChange={handleChangeInput}
             />
-          </div>
 
-          <AddInterested
+          <Typography variant="body2">Interessado</Typography>
+            <TextField
+              color="secondary"
+              value={inputs.interessado}
+              name="interessado"
+              onChange={handleChangeInput}
+            />
+
+          {/* <AddInterested
             inputs={inputs}
             setInputs={setInputs}
             tempInterested={tempInterested}
             setTempInterested={setTempInterested}
-          />
+          /> */}
 
           <Typography variant="body2">Descrição</Typography>
           <TextField
