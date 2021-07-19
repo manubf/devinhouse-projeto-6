@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-// import { useAxios } from "../../utils/hooks";
+import { useAxios } from "../../utils/hooks";
 // import ProcessoService from "../../service";
 
 import {
@@ -30,12 +30,7 @@ export function Home() {
         "auhauah uhauhauha skoskodkdo haiuhsijd jdosjkmsnssfjkf hfshiihifhifhf ojokopk",
       interessados: ["aaa", "bbbb"],
     },
-    {
-      numero: 321,
-      descricao: "jsjsjsjssj",
-      assunto: "assunto 2",
-      interessados: ["cccc", "ddddd"],
-    },
+    {},
     {},
   ]);
   const [detail, setDetail] = useState({
@@ -45,21 +40,17 @@ export function Home() {
   const [inputSearch, setInputSearch] = useState(undefined);
   const [researchBySubect, setResearchBySubect] = useState(false);
 
-  // const { getProcess } = useAxios();
-
-  detail.appears &&
-    window.scroll({
-      top: 0,
-      behavior: "smooth",
-    });
+  const { getEndpoint } = useAxios();
 
   useEffect(() => {
-    // getProcess().then((resp) => console.log(resp)
+    getEndpoint("/processos").then((resp) => {
+      console.log(resp);
+      //   setProcessos(response);
+      setLoading(false);
+    });
     // ProcessoService.buscaProcessos().then((response) => {
-    setLoading(false);
-    //   setProcessos(response);
     // });
-  }, []);
+  }, [getEndpoint]);
 
   const formatString = (text) =>
     text
@@ -84,11 +75,11 @@ export function Home() {
       })
     : processos; // [];  sem pesquisa talvez deixar vazio e mostrar uma mensagem
 
-  // const axiosInstance = useAxios();
-  // const callApi = useCallback(() => {
-  // 	!!axiosInstance.current && axiosInstance.current.get("/user");
-  // }, [axiosInstance]);
-
+  detail.appears &&
+    window.scroll({
+      top: 0,
+      behavior: "smooth",
+    });
   return (
     <>
       <TopStyled>

@@ -4,6 +4,7 @@ import { useKeycloak } from "@react-keycloak/web";
 
 export function PrivateRoute({ component: Component, ...rest }) {
 	const { keycloak } = useKeycloak();
+	console.log("aqui", keycloak)
 
 	return (
 		<Route
