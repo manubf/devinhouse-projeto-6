@@ -114,7 +114,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 	protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers,
 			HttpStatus status, WebRequest request) {
 		Validacao validacao = new Validacao(LocalDate.now(), "Endpoint não cadastrado" , 404);
-		logger.info("tentativa de endpoint não cadastrado");
+		logger.error("tentativa de endpoint não cadastrado");
 		return ResponseEntity.status(404).body(validacao);
 	}
 }
