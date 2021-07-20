@@ -16,6 +16,15 @@ export const PaperStyled = styled(Paper)(({ theme }) => ({
   },
 }));
 
+export const AutocompleteWrapper = styled('div')(({ theme }) => ({
+  margin: theme.spacing(1),
+  
+  [theme.breakpoints.up("md")]: {
+    margin: '0 50px',
+    marginBottom: theme.spacing(1),
+  },
+}));
+
 export const InputBaseStyled = styled(InputBase)(({ theme }) => ({
   marginLeft: theme.spacing(1),
   flex: 1,

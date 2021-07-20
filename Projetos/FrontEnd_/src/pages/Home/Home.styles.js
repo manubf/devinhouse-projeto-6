@@ -14,6 +14,14 @@ export const ContentWrapper = styled(({ appears, ...other }) => (
   },
 }));
 
+export const MessageWrapper = styled('div')(({ theme }) => ({
+  display: "flex",
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginTop: theme.spacing(2),
+  width: '100%',
+}));
+
 export const TopStyled = styled('div')(({ theme }) => ({
   display: "flex",
   flexWrap: 'wrap',
