@@ -14,6 +14,7 @@ import br.com.devinhouse.grupo04.service.InteressadoService;
 @Mapper(componentModel = "spring", uses = {InteressadoService.class, AssuntoService.class})
 public interface ProcessoMapper {
 	@Mapping(source = "cdInteressadoId", target = "cdInteressado" )
+//	@Mapping(source = "nuProcesso", target = "nuProcesso" )
 	@Mapping(source = "cdAssuntoId", target = "cdAssunto" )
 	Processo toProcesso(ProcessoDTOInput dtoInput);
 	@Mapping(target = "cdInteressado", expression = "java(processo.getCdInteressado())" )

@@ -25,7 +25,7 @@ public class ProcessoService {
 	@Autowired
 	private ProcessoRepository repository;
 
-	public List<Processo> findAll(String chaveProcesso, Long cdInteressadoId, Long cdAssuntoId) {
+	public List<Processo> findAll(String chaveProcesso, Long nuProcesso, Long cdInteressadoId, Long cdAssuntoId) {
 
 		if (chaveProcesso != null) {
 			return repository.findAllByChaveProcesso(chaveProcesso);
@@ -42,6 +42,11 @@ public class ProcessoService {
 		if (cdAssuntoId != null) {
 			return repository.findAllByCdAssuntoId(cdAssuntoId);
 		}
+		
+		if (nuProcesso != null) {
+			return repository.findByNuProcesso(nuProcesso);
+		}
+
 
 		return repository.findAll();
 
@@ -52,6 +57,9 @@ public class ProcessoService {
 
 		return result.orElseThrow(() -> new ProcessoNotFoundException());
 	}
+	
+
+	
 
 	public Processo create(Processo processo) {
 		verificaFlAtivoInteressadoAssunto(processo);

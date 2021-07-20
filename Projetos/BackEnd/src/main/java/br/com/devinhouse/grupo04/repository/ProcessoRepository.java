@@ -1,6 +1,7 @@
 package br.com.devinhouse.grupo04.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -17,5 +18,8 @@ public interface ProcessoRepository extends JpaRepository<Processo, Long> {
 	List<Processo> findAllByCdAssuntoId(Long assuntoId);
 
 	List<Processo> findAllByCdInteressadoId(Long interessadoId);
+
+	List<Processo> findByNuProcesso(Long nuProcesso);
+
 
 }

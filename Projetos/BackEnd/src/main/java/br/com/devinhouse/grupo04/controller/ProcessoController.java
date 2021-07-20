@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.devinhouse.grupo04.dto.ProcessoDTOInput;
 import br.com.devinhouse.grupo04.dto.ProcessoDTOOutput;
+import br.com.devinhouse.grupo04.entity.Processo;
 import br.com.devinhouse.grupo04.mapper.ProcessoMapper;
 import br.com.devinhouse.grupo04.service.ProcessoService;
 
@@ -41,10 +42,11 @@ public class ProcessoController {
 	@ResponseBody
 	@ResponseStatus(code = HttpStatus.OK)
 	public List<ProcessoDTOOutput> findAll(@RequestParam(required = false) String chave_processo,
+			@RequestParam(required = false) Long nu_processo,
 			@RequestParam(required = false) Long cd_interessado_id,
 			@RequestParam(required = false) Long cd_assunto_id
 			) {
-		return processoMapper.toDto(service.findAll(chave_processo, cd_interessado_id, cd_assunto_id));
+		return processoMapper.toDto(service.findAll(chave_processo, nu_processo, cd_interessado_id, cd_assunto_id));
 
 	}
 
@@ -55,6 +57,8 @@ public class ProcessoController {
 	public ProcessoDTOOutput find(@PathVariable Long id) {
 		return processoMapper.toDto(service.find(id));
 	}
+	
+
 
 	@RolesAllowed("user") 
 	@PostMapping(produces = APPLICATION_JSON_VALUE)
