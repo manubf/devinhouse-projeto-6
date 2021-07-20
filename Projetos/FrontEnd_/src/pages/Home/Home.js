@@ -22,18 +22,6 @@ export function Home() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [processos, setProcessos] = useState([
-    {
-      nuProcesso: 123,
-      descricao:
-        "auhauah uhauhauha skoskodkdo haiuhsijd jdosjkmsnssfjkf hfshiihifhifhf ojokopk",
-      cdAssunto: {
-        descricao:
-          "auhauah uhauhauha skoskodkdo haiuhsijd jdosjkmsnssfjkf hfshiihifhifhf ojokopk",
-      },
-      cdInteressado: {
-        nmInteressado: "aaa",
-      },
-    },
     //   {
     //     "id": 1,
     //     "nuProcesso": 1,
@@ -57,47 +45,50 @@ export function Home() {
     //   },
     {},
     {},
+    {},
   ]);
 
   const [detail, setDetail] = useState({
     appears: false,
     processClicked: undefined,
   });
-  const [inputSearch, setInputSearch] = useState(undefined);
-  const [researchBySubect, setResearchBySubect] = useState(false);
 
   const { getEndpoint } = useAxios();
-
+  
   useEffect(() => {
-    getEndpoint("/processos").then((resp) => {
-      setProcessos(resp);
+    const getAPI = async () => {
+      const response = await getEndpoint("/processos");
+      setProcessos(response);
       setLoading(false);
-    });
+    };
+    getAPI()
   }, [getEndpoint]);
 
-  const formatString = (text) =>
-    text
-      ?.toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
+  // const formatString = (text) =>
+  //   text
+  //     ?.toLowerCase()
+  //     .normalize("NFD")
+  //     .replace(/[\u0300-\u036f]/g, "");
 
   // TODO: essa parte da pesquisa precisa ser refeita, pois dependerá agora de endpoints de pesquisa por número ou assunto
-  const result = inputSearch
-    ? processos.filter((item) => {
-        const formatInput = formatString(inputSearch);
-        const nuProcesso = formatString(item?.nuProcesso.toString())?.includes(
-          formatInput
-        );
-        const entrada = formatString(item?.entrada)?.includes(formatInput);
-        const descricao = formatString(item?.descricao)?.includes(formatInput);
-        const assunto = formatString(item?.cdAssunto?.descricao)?.includes(
-          formatInput
-        );
-        const interessado =
-          item.cdInteressado?.nmInteressado?.includes(formatInput);
-        return nuProcesso || entrada || descricao || assunto || interessado;
-      })
-    : processos; // [];  sem pesquisa talvez deixar vazio e mostrar uma mensagem
+  // const result = inputSearch
+  //   ? processos.filter((item) => {
+  //       const formatInput = formatString(inputSearch);
+  //       const nuProcesso = formatString(item?.nuProcesso.toString())?.includes(
+  //         formatInput
+  //       );
+  //       const entrada = formatString(item?.entrada)?.includes(formatInput);
+  //       const descricao = formatString(item?.descricao)?.includes(formatInput);
+  //       const assunto = formatString(item?.cdAssunto?.descricao)?.includes(
+  //         formatInput
+  //       );
+  //       const interessado =
+  //         item.cdInteressado?.nmInteressado?.includes(formatInput);
+  //       return nuProcesso || entrada || descricao || assunto || interessado;
+  //     })
+  //   : processos; // [];  sem pesquisa talvez deixar vazio e mostrar uma mensagem
+
+  // const result = clicksearch ? lala : processos;
 
   detail.appears &&
     window.scroll({
@@ -124,15 +115,16 @@ export function Home() {
       </TopStyled>
 
       <InputSearch
-        inputSearch={inputSearch}
-        setInputSearch={setInputSearch}
-        researchBySubect={researchBySubect}
-        setResearchBySubect={setResearchBySubect}
+        // inputSearch={inputSearch}
+        // setInputSearch={setInputSearch}
+        // researchBySubect={researchBySubect}
+        // setResearchBySubect={setResearchBySubect}
+        setProcessos={setProcessos}
       />
 
       <ContentWrapper appears={detail.appears}>
         <ProcessWrapper appears={detail.appears}>
-          {result?.map((process) => (
+          {processos?.map((process) => (
             <Process
               loading={loading}
               key={process.id}

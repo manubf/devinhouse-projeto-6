@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 
 import { useKeycloak } from "@react-keycloak/web";
@@ -22,18 +22,28 @@ export const useAxios = () => {
     };
   }, [baseURL, initialized, kcToken]);
 
-  // const callApi = useCallback(() => {
-  // 	!!axiosInstance.current && axiosInstance.current.get("/user");
-  // }, [axiosInstance]);
+  const getEndpoint = useCallback(
+    async (path) => {
+      try {
+        const response = await axiosInstance?.current?.get(path);
+        return response.data;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [axiosInstance]
+  );
 
-  const getEndpoint = async (path) => {
-    try {
-      const response = await axiosInstance?.current?.get(path);
-      return response.data;
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const getWithRequestParamsEndpoint = async (path) => {
+  //   try {
+  //     const response = await axiosInstance?.current?.get(path, {
+
+  //     });
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const postEndpoint = async (path, data) => {
     try {
