@@ -4,20 +4,16 @@ import { Close } from "@material-ui/icons";
 import { Typography, Button, Dialog, DialogTitle, DialogActions, MenuItem } from "@material-ui/core";
 import { CloseIcon, DialogContentStyled } from "./CreateEditProcess.styles";
 
-// import ProcessoService from "../../service";
-import { currentYear, today } from "./constants";
-
 import { MessageAlert } from "../../../../components";
-import { AddInterested } from "./fragments";
 
 import { Field, Form, Formik } from "formik";
 import { useAxios } from "../../../../utils/hooks";
 import { TextField } from "formik-material-ui";
 
-import { formValidationSchema } from "../../../../utils/validations";
+import { formValidationSchema, currentYear } from "../../../../utils/validations";
 
-export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, setDetail }) {
-	const { getEndpoint } = useAxios();
+export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, setDetail, getEndpoint }) {
+	const { postEndpoint, putEndpoint } = useAxios();
 	const [subjectList, setSubjectList] = useState([]);
 	const [interestedList, setInterestedList] = useState([]);
 
@@ -28,20 +24,22 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
 	}, []);
 
 	const [inputsForm, setInputsForm] = useState({
-		assunto: processToEdit ? processToEdit.cdAssunto.descricao : "",
-		interessado: processToEdit ? processToEdit.cdInteressado.nmInteressado : "",
+		assunto: processToEdit ? processToEdit.cdAssunto.id : "",
+		interessado: processToEdit ? processToEdit.cdInteressado.id : "",
 		descricao: processToEdit ? processToEdit.descricao : "",
 		sgOrgaoSetor: processToEdit ? processToEdit.sgOrgaoSetor : "",
-		nuAno: processToEdit ? processToEdit.nuAno : currentYear,
+		nuAno: processToEdit ? Number(processToEdit.nuAno) : currentYear,
 	});
 	const [alert, setAlert] = useState(false);
 
 	useEffect(() => {
 		if (processToEdit) {
 			setInputsForm({
-				assunto: processToEdit.cdAssunto.descricao,
-				interessado: processToEdit.cdInteressado.nmInteressado,
+				assunto: processToEdit.cdAssunto.id,
+				interessado: processToEdit.cdInteressado.id,
 				descricao: processToEdit.descricao,
+				sgOrgaoSetor: processToEdit.sgOrgaoSetor,
+				nuAno: Number(processToEdit.nuAno),
 			});
 		}
 
@@ -50,54 +48,10 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
 				assunto: "",
 				interessado: "",
 				descricao: "",
+				sgOrgaoSetor: "",
+				nuAno: currentYear,
 			});
 	}, [processToEdit]);
-
-	// const [tempInterested, setTempInterested] = useState("");
-
-	// const handleChangeInput = (event) => {
-	// 	const { value, name } = event.target;
-	// 	setInputsForm({ ...inputsForm, [name]: value });
-	// };
-
-	// const saveProcess = () => {
-	// 	const { assunto, interessado, descricao } = inputsForm;
-	// 	const numero = `SOFT 2021/${Math.ceil(Math.random() * (1 - 99999) + 99999)}`;
-	// 	if (processToEdit) {
-	// 		const itemToEdit = {
-	// 			descricao,
-	// 			assunto,
-	// 			interessado,
-	// 		};
-	// 		setInputsForm({
-	// 			descricao,
-	// 			assunto,
-	// 			interessado,
-	// 		});
-	// 		// ProcessoService.editaProcesso(processToEdit.id, itemToEdit).then(() =>
-	// 		//   ProcessoService.buscaProcessos().then((response) =>
-	// 		//     setProcessos(response)
-	// 		//   )
-	// 		// );
-	// 		setDetail(false);
-	// 	} else {
-	// 		const item = {
-	// 			entrada: today,
-	// 			numero,
-	// 			descricao,
-	// 			assunto,
-	// 			interessado,
-	// 		};
-	// 		// ProcessoService.adicionaProcesso(item).then(() =>
-	// 		//   ProcessoService.buscaProcessos().then((response) =>
-	// 		//     setProcessos(response)
-	// 		//   )
-	// 		// );
-	// 		setAlert(true);
-	// 	}
-
-	// 	setOpen(false);
-	// };
 
 	return (
 		<>
@@ -119,31 +73,31 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
 					enableReinitialize={true}
 					validationSchema={formValidationSchema}
 					onSubmit={(values, { setSubmitting }) => {
-						window.alert(JSON.stringify(values, null, 2));
+						const newValues = {
+							...values,
+							nuAno: values.nuAno.toString(),
+						};
+
+						const functionsToCall = () => {
+							setAlert(true);
+							setDetail(false);
+							setSubmitting(false);
+							setOpen(false);
+							getEndpoint(`/processos`).then((response) => setProcessos(response));
+						};
 
 						if (processToEdit) {
-							// enviar dados para editar
-							// setDetail(false);
+							putEndpoint(`/processos/${processToEdit.id}`, newValues).then(functionsToCall);
 						} else {
-							// enviar dados para adicionar
-							// setAlert(true);
+							postEndpoint("/processos", newValues).then(functionsToCall);
 						}
-
-						// setOpen(false);
-						setSubmitting(false);
 					}}
 				>
 					{({ submitForm, isSubmitting, isValid }) => (
 						<Form>
 							<DialogContentStyled>
 								<Typography variant="body2">Assunto</Typography>
-								<Field
-									select
-									component={TextField}
-									color="secondary"
-									name="assunto"
-									// required
-								>
+								<Field select component={TextField} color="secondary" name="assunto">
 									{subjectList?.map((subject) => (
 										<Field //
 											component={MenuItem}
@@ -156,13 +110,7 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
 								</Field>
 
 								<Typography variant="body2">Interessado</Typography>
-								<Field
-									select
-									component={TextField}
-									color="secondary"
-									name="interessado"
-									// required
-								>
+								<Field select component={TextField} color="secondary" name="interessado">
 									{interestedList?.map((interested) => (
 										<Field //
 											component={MenuItem}
@@ -175,22 +123,10 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
 								</Field>
 
 								<Typography variant="body2">Descrição</Typography>
-								<Field
-									component={TextField}
-									name="descricao"
-									variant="outlined"
-									multiline
-									// required
-								/>
+								<Field component={TextField} name="descricao" variant="outlined" multiline />
 
 								<Typography variant="body2">Sigla Órgão Setor</Typography>
-								<Field
-									select
-									component={TextField}
-									color="secondary"
-									name="sgOrgaoSetor"
-									// required
-								>
+								<Field select component={TextField} color="secondary" name="sgOrgaoSetor">
 									{["SOFT", "DVHS", "RDST"]?.map((item) => (
 										<Field //
 											component={MenuItem}
@@ -203,14 +139,7 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
 								</Field>
 
 								<Typography variant="body2">Ano</Typography>
-								<Field
-									component={TextField}
-									name="nuAno"
-									variant="outlined"
-									// required
-									type="number"
-									// max="2021"
-								/>
+								<Field component={TextField} name="nuAno" variant="outlined" type="number" />
 
 								<DialogActions>
 									<Button

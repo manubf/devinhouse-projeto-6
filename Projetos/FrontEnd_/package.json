@@ -10,6 +10,7 @@
     "axios": "^0.21.1",
     "date-fns": "^2.22.1",
     "formik": "^2.2.9",
+    "formik-material-ui": "^3.0.1",
     "keycloak-js": "^14.0.0",
     "notistack": "^1.0.9",
     "react": "^17.0.2",

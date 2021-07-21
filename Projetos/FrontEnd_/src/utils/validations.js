@@ -1,5 +1,6 @@
 import * as Yup from "yup";
-import { currentYear } from "../pages/Home/fragments/CreateEditProcess/constants";
+
+export const currentYear = new Date().getFullYear();
 
 export const formValidationSchema = () =>
 	Yup.object().shape({
