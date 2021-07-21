@@ -5,7 +5,7 @@ import { Typography, Button, Dialog, DialogTitle, DialogActions, MenuItem } from
 import { CloseIcon, DialogContentStyled } from "./CreateEditProcess.styles";
 
 // import ProcessoService from "../../service";
-import { today } from "./constants";
+import { currentYear, today } from "./constants";
 
 import { MessageAlert } from "../../../../components";
 import { AddInterested } from "./fragments";
@@ -13,6 +13,8 @@ import { AddInterested } from "./fragments";
 import { Field, Form, Formik } from "formik";
 import { useAxios } from "../../../../utils/hooks";
 import { TextField } from "formik-material-ui";
+
+import { formValidationSchema } from "../../../../utils/validations";
 
 export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, setDetail }) {
 	const { getEndpoint } = useAxios();
@@ -29,8 +31,8 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
 		assunto: processToEdit ? processToEdit.cdAssunto.descricao : "",
 		interessado: processToEdit ? processToEdit.cdInteressado.nmInteressado : "",
 		descricao: processToEdit ? processToEdit.descricao : "",
-		sgOrgaoSetor: "",
-		nuAno: "",
+		sgOrgaoSetor: processToEdit ? processToEdit.sgOrgaoSetor : "",
+		nuAno: processToEdit ? processToEdit.nuAno : currentYear,
 	});
 	const [alert, setAlert] = useState(false);
 
@@ -115,11 +117,9 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
 				<Formik
 					initialValues={inputsForm}
 					enableReinitialize={true}
-					// validationSchema={ConsultaSchema}
+					validationSchema={formValidationSchema}
 					onSubmit={(values, { setSubmitting }) => {
-						window.alert("Salvo!");
-						console.log(values);
-						setSubmitting(false);
+						window.alert(JSON.stringify(values, null, 2));
 
 						if (processToEdit) {
 							// enviar dados para editar
@@ -130,14 +130,20 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
 						}
 
 						// setOpen(false);
-						// setSubmitting(false);
+						setSubmitting(false);
 					}}
 				>
-					{({ submitForm, isSubmitting }) => (
+					{({ submitForm, isSubmitting, isValid }) => (
 						<Form>
 							<DialogContentStyled>
 								<Typography variant="body2">Assunto</Typography>
-								<Field select component={TextField} color="secondary" name="assunto" required>
+								<Field
+									select
+									component={TextField}
+									color="secondary"
+									name="assunto"
+									// required
+								>
 									{subjectList?.map((subject) => (
 										<Field //
 											component={MenuItem}
@@ -155,7 +161,7 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
 									component={TextField}
 									color="secondary"
 									name="interessado"
-									required
+									// required
 								>
 									{interestedList?.map((interested) => (
 										<Field //
@@ -174,7 +180,7 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
 									name="descricao"
 									variant="outlined"
 									multiline
-									required
+									// required
 								/>
 
 								<Typography variant="body2">Sigla Órgão Setor</Typography>
@@ -183,7 +189,7 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
 									component={TextField}
 									color="secondary"
 									name="sgOrgaoSetor"
-									required
+									// required
 								>
 									{["SOFT", "DVHS", "RDST"]?.map((item) => (
 										<Field //
@@ -201,15 +207,15 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
 									component={TextField}
 									name="nuAno"
 									variant="outlined"
-									required
+									// required
 									type="number"
-									max="2021"
+									// max="2021"
 								/>
 
 								<DialogActions>
 									<Button
 										onClick={submitForm}
-										disabled={isSubmitting}
+										disabled={isSubmitting || !isValid}
 										variant="contained"
 										color="primary"
 									>
