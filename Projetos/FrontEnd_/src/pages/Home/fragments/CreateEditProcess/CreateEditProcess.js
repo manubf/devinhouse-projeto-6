@@ -1,160 +1,228 @@
 import { useState, useEffect } from "react";
 
 import { Close } from "@material-ui/icons";
-import {
-  Typography,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  TextField,
-} from "@material-ui/core";
+import { Typography, Button, Dialog, DialogTitle, DialogActions, MenuItem } from "@material-ui/core";
 import { CloseIcon, DialogContentStyled } from "./CreateEditProcess.styles";
 
 // import ProcessoService from "../../service";
 import { today } from "./constants";
 
 import { MessageAlert } from "../../../../components";
-import { AddInterested } from './fragments'
+import { AddInterested } from "./fragments";
+
+import { Field, Form, Formik } from "formik";
+import { useAxios } from "../../../../utils/hooks";
+import { TextField } from "formik-material-ui";
 
 export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, setDetail }) {
-  const [inputs, setInputs] = useState({
-    assunto: processToEdit ? processToEdit.cdAssunto.descricao : "",
-    interessado: processToEdit ? processToEdit.cdInteressado.nmInteressado : "",
-    descricao: processToEdit ? processToEdit.descricao : "",
-  });
-  const [alert, setAlert] = useState(false);
+	const { getEndpoint } = useAxios();
+	const [subjectList, setSubjectList] = useState([]);
+	const [interestedList, setInterestedList] = useState([]);
 
-  useEffect(() => {
-    if (processToEdit) {
-      setInputs({
-        assunto: processToEdit.cdAssunto.descricao,
-        interessado: processToEdit.cdInteressado.nmInteressado,
-        descricao: processToEdit.descricao,
-      });
-    }
+	useEffect(() => {
+		getEndpoint(`/assuntos`).then((response) => setSubjectList(response));
+		getEndpoint(`/interessados`).then((response) => setInterestedList(response));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
-    return () =>
-      setInputs({
-        assunto: "",
-        interessado: "",
-        descricao: "",
-      });
-  }, [processToEdit]);
+	const [inputsForm, setInputsForm] = useState({
+		assunto: processToEdit ? processToEdit.cdAssunto.descricao : "",
+		interessado: processToEdit ? processToEdit.cdInteressado.nmInteressado : "",
+		descricao: processToEdit ? processToEdit.descricao : "",
+		sgOrgaoSetor: "",
+		nuAno: "",
+	});
+	const [alert, setAlert] = useState(false);
 
-  const [tempInterested, setTempInterested] = useState("");
+	useEffect(() => {
+		if (processToEdit) {
+			setInputsForm({
+				assunto: processToEdit.cdAssunto.descricao,
+				interessado: processToEdit.cdInteressado.nmInteressado,
+				descricao: processToEdit.descricao,
+			});
+		}
 
-  const handleChangeInput = (event) => {
-    const { value, name } = event.target;
-    setInputs({ ...inputs, [name]: value });
-  };
+		return () =>
+			setInputsForm({
+				assunto: "",
+				interessado: "",
+				descricao: "",
+			});
+	}, [processToEdit]);
 
-  const saveProcess = () => {
-    const { assunto, interessado, descricao } = inputs;
-    const numero = `SOFT 2021/${Math.ceil(
-      Math.random() * (1 - 99999) + 99999
-    )}`;
-    if (processToEdit) {
-      const itemToEdit = {
-        descricao,
-        assunto,
-        interessado,
-      };
-      setInputs({
-        descricao,
-        assunto,
-        interessado,
-      });
-      // ProcessoService.editaProcesso(processToEdit.id, itemToEdit).then(() =>
-      //   ProcessoService.buscaProcessos().then((response) =>
-      //     setProcessos(response)
-      //   )
-      // );
-      setDetail(false)
-      
-    } else {
-      const item = {
-        entrada: today,
-        numero,
-        descricao,
-        assunto,
-        interessado,
-      };
-      // ProcessoService.adicionaProcesso(item).then(() =>
-      //   ProcessoService.buscaProcessos().then((response) =>
-      //     setProcessos(response)
-      //   )
-      // );
-      setAlert(true);
-    }
+	// const [tempInterested, setTempInterested] = useState("");
 
-    setOpen(false);
-  };
+	// const handleChangeInput = (event) => {
+	// 	const { value, name } = event.target;
+	// 	setInputsForm({ ...inputsForm, [name]: value });
+	// };
 
-  return (
-    <>
-      <Dialog
-        onClose={() => setOpen(false)}
-        aria-labelledby="customized-dialog-title"
-        open={open}
-        fullWidth
-      >
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <CloseIcon aria-label="close" onClick={() => setOpen(false)}>
-            <Close />
-          </CloseIcon>
-        </div>
-        <DialogTitle style={{ padding: "16px 20px 0" }}>
-          Cadastro de processo
-        </DialogTitle>
+	// const saveProcess = () => {
+	// 	const { assunto, interessado, descricao } = inputsForm;
+	// 	const numero = `SOFT 2021/${Math.ceil(Math.random() * (1 - 99999) + 99999)}`;
+	// 	if (processToEdit) {
+	// 		const itemToEdit = {
+	// 			descricao,
+	// 			assunto,
+	// 			interessado,
+	// 		};
+	// 		setInputsForm({
+	// 			descricao,
+	// 			assunto,
+	// 			interessado,
+	// 		});
+	// 		// ProcessoService.editaProcesso(processToEdit.id, itemToEdit).then(() =>
+	// 		//   ProcessoService.buscaProcessos().then((response) =>
+	// 		//     setProcessos(response)
+	// 		//   )
+	// 		// );
+	// 		setDetail(false);
+	// 	} else {
+	// 		const item = {
+	// 			entrada: today,
+	// 			numero,
+	// 			descricao,
+	// 			assunto,
+	// 			interessado,
+	// 		};
+	// 		// ProcessoService.adicionaProcesso(item).then(() =>
+	// 		//   ProcessoService.buscaProcessos().then((response) =>
+	// 		//     setProcessos(response)
+	// 		//   )
+	// 		// );
+	// 		setAlert(true);
+	// 	}
 
-        <DialogContentStyled>
-          <Typography variant="body2">Assunto</Typography>
-            <TextField
-              color="secondary"
-              value={inputs.assunto}
-              name="assunto"
-              onChange={handleChangeInput}
-            />
+	// 	setOpen(false);
+	// };
 
-          <Typography variant="body2">Interessado</Typography>
-            <TextField
-              color="secondary"
-              value={inputs.interessado}
-              name="interessado"
-              onChange={handleChangeInput}
-            />
+	return (
+		<>
+			<Dialog
+				onClose={() => setOpen(false)}
+				aria-labelledby="customized-dialog-title"
+				open={open}
+				fullWidth
+			>
+				<div style={{ display: "flex", justifyContent: "flex-end" }}>
+					<CloseIcon aria-label="close" onClick={() => setOpen(false)}>
+						<Close />
+					</CloseIcon>
+				</div>
+				<DialogTitle style={{ padding: "16px 20px 0" }}>Cadastro de processo</DialogTitle>
 
-          {/* <AddInterested
-            inputs={inputs}
-            setInputs={setInputs}
-            tempInterested={tempInterested}
-            setTempInterested={setTempInterested}
-          /> */}
+				<Formik
+					initialValues={inputsForm}
+					enableReinitialize={true}
+					// validationSchema={ConsultaSchema}
+					onSubmit={(values, { setSubmitting }) => {
+						window.alert("Salvo!");
+						console.log(values);
+						setSubmitting(false);
 
-          <Typography variant="body2">Descrição</Typography>
-          <TextField
-            color="secondary"
-            multiline
-            value={inputs.descricao}
-            name="descricao"
-            onChange={handleChangeInput}
-          />
+						if (processToEdit) {
+							// enviar dados para editar
+							// setDetail(false);
+						} else {
+							// enviar dados para adicionar
+							// setAlert(true);
+						}
 
-          <DialogActions>
-            <Button onClick={saveProcess} variant="contained" color="primary">
-              Salvar
-            </Button>
-          </DialogActions>
-        </DialogContentStyled>
-      </Dialog>
+						// setOpen(false);
+						// setSubmitting(false);
+					}}
+				>
+					{({ submitForm, isSubmitting }) => (
+						<Form>
+							<DialogContentStyled>
+								<Typography variant="body2">Assunto</Typography>
+								<Field select component={TextField} color="secondary" name="assunto" required>
+									{subjectList?.map((subject) => (
+										<Field //
+											component={MenuItem}
+											key={subject.id}
+											value={subject.id}
+										>
+											{subject.descricao}
+										</Field>
+									))}
+								</Field>
 
-      <MessageAlert
-        alert={alert}
-        setAlert={setAlert}
-        message="Processo cadastrado com sucesso!"
-      />
-    </>
-  );
+								<Typography variant="body2">Interessado</Typography>
+								<Field
+									select
+									component={TextField}
+									color="secondary"
+									name="interessado"
+									required
+								>
+									{interestedList?.map((interested) => (
+										<Field //
+											component={MenuItem}
+											key={interested.id}
+											value={interested.id}
+										>
+											{interested.nmInteressado}
+										</Field>
+									))}
+								</Field>
+
+								<Typography variant="body2">Descrição</Typography>
+								<Field
+									component={TextField}
+									name="descricao"
+									variant="outlined"
+									multiline
+									required
+								/>
+
+								<Typography variant="body2">Sigla Órgão Setor</Typography>
+								<Field
+									select
+									component={TextField}
+									color="secondary"
+									name="sgOrgaoSetor"
+									required
+								>
+									{["SOFT", "DVHS", "RDST"]?.map((item) => (
+										<Field //
+											component={MenuItem}
+											key={item}
+											value={item}
+										>
+											{item}
+										</Field>
+									))}
+								</Field>
+
+								<Typography variant="body2">Ano</Typography>
+								<Field
+									component={TextField}
+									name="nuAno"
+									variant="outlined"
+									required
+									type="number"
+									max="2021"
+								/>
+
+								<DialogActions>
+									<Button
+										onClick={submitForm}
+										disabled={isSubmitting}
+										variant="contained"
+										color="primary"
+									>
+										Salvar
+									</Button>
+								</DialogActions>
+							</DialogContentStyled>
+						</Form>
+					)}
+				</Formik>
+			</Dialog>
+
+			<MessageAlert alert={alert} setAlert={setAlert} message="Processo cadastrado com sucesso!" />
+		</>
+	);
 }
-
