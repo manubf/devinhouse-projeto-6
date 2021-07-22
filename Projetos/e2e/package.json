@@ -1,0 +1,15 @@
+{
+  "name": "e2e",
+  "version": "1.0.0",
+  "description": "Testes e2e projeto03 - grupo03",
+  "main": "index.js",
+  "scripts": {		
+    "test": "npx cypress run",
+    "open": "npx cypress open"
+},
+  "author": "Emanuelle, Amanda e Rosana",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^8.0.0"
+  }
+}
