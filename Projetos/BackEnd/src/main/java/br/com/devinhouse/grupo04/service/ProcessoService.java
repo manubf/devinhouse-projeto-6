@@ -44,6 +44,7 @@ public class ProcessoService {
 		}
 		
 		if (nuProcesso != null) {
+			logger.info("realizada busca de processo por número do processo");
 			return repository.findByNuProcesso(nuProcesso);
 		}
 

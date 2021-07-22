@@ -4,6 +4,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
@@ -23,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.devinhouse.grupo04.dto.ProcessoDTOInput;
 import br.com.devinhouse.grupo04.dto.ProcessoDTOOutput;
-import br.com.devinhouse.grupo04.entity.Processo;
 import br.com.devinhouse.grupo04.mapper.ProcessoMapper;
 import br.com.devinhouse.grupo04.service.ProcessoService;
 
@@ -31,6 +33,8 @@ import br.com.devinhouse.grupo04.service.ProcessoService;
 @RequestMapping(value = "/v1" + "/processos")
 public class ProcessoController {
 
+	private static final Logger logger = LoggerFactory.getLogger(ProcessoController.class);
+	
 	@Autowired
 	private ProcessoService service;
 
@@ -65,6 +69,7 @@ public class ProcessoController {
 	@ResponseBody
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public ProcessoDTOOutput create(@Valid @RequestBody ProcessoDTOInput processoDTO) {
+		logger.info("chamada para criação de processo");
 		return processoMapper.toDto(service.create(processoMapper.toProcesso(processoDTO)));
 	}
 
@@ -74,6 +79,7 @@ public class ProcessoController {
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void update(@PathVariable Long id, @RequestBody ProcessoDTOInput processoDTO) {
 		service.update(id, processoMapper.toProcesso(processoDTO));
+		logger.info("atualização de processo");
 	}
 
 	@RolesAllowed("user") 
