@@ -12,8 +12,8 @@ import { TextField } from "formik-material-ui";
 
 import { formValidationSchema, currentYear } from "../../../../utils/validations";
 
-export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, setDetail, getEndpoint }) {
-	const { postEndpoint, putEndpoint } = useAxios();
+export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, setDetail }) {
+	const { getEndpoint, postEndpoint, putEndpoint } = useAxios();
 	const [subjectList, setSubjectList] = useState([]);
 	const [interestedList, setInterestedList] = useState([]);
 
@@ -75,8 +75,11 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
 					onSubmit={(values, { setSubmitting }) => {
 						const newValues = {
 							...values,
+							cdAssuntoId: values.assunto,
+							cdInteressadoId: values.interessado,
 							nuAno: values.nuAno.toString(),
 						};
+						console.log("newValues", newValues)
 
 						const functionsToCall = () => {
 							setAlert(true);
@@ -99,7 +102,7 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
 								<Typography variant="body2">Assunto</Typography>
 								<Field select component={TextField} color="secondary" name="assunto">
 									{subjectList?.map((subject) => (
-										<Field //
+										<Field
 											component={MenuItem}
 											key={subject.id}
 											value={subject.id}
@@ -112,7 +115,7 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
 								<Typography variant="body2">Interessado</Typography>
 								<Field select component={TextField} color="secondary" name="interessado">
 									{interestedList?.map((interested) => (
-										<Field //
+										<Field
 											component={MenuItem}
 											key={interested.id}
 											value={interested.id}
@@ -125,10 +128,10 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
 								<Typography variant="body2">Descrição</Typography>
 								<Field component={TextField} name="descricao" variant="outlined" multiline />
 
-								<Typography variant="body2">Sigla Órgão Setor</Typography>
+								<Typography variant="body2">Órgão/Setor</Typography>
 								<Field select component={TextField} color="secondary" name="sgOrgaoSetor">
-									{["SOFT", "DVHS", "RDST"]?.map((item) => (
-										<Field //
+									{["SOFT", "DVHS", "RDST", "devn", "hous", "DEVI"]?.map((item) => (
+										<Field
 											component={MenuItem}
 											key={item}
 											value={item}

@@ -90,7 +90,7 @@ export function Home() {
 					{detail.appears && (
 						<DetailWrapper>
 							<ProcessDetail
-								id={detail?.processClicked.id}
+								processToEdit={detail.processClicked}
 								setDetail={setDetail}
 								setOpen={setOpen}
 								setProcessos={setProcessos}
@@ -106,7 +106,6 @@ export function Home() {
 				processToEdit={detail.processClicked}
 				setProcessos={setProcessos}
 				setDetail={setDetail}
-				getEndpoint={getEndpoint}
 			/>
 		</>
 	);

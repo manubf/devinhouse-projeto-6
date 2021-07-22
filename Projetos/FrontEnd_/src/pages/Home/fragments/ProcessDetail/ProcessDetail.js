@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { Typography } from "@material-ui/core";
 import {
@@ -16,42 +16,33 @@ import {
   ButtonStyled,
 } from "./ProcessDetail.styles";
 
-// import ProcessoService from "../../service";
-
 import processImg from "../../../../assets/process-fake.png";
 import closeIcon from "../../../../assets/close.png";
 
 import { AlertDialog, MessageAlert } from "../../../../components";
+import { useAxios } from "../../../../utils/hooks";
 
-export function ProcessDetail({ id, setDetail, setOpen, setProcessos }) {
+export function ProcessDetail({ setDetail, setOpen, setProcessos, processToEdit }) {
   const [loading, setLoading] = useState(true);
-  const [process, setProcess] = useState({});
   const [openMessage, setOpenMessage] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
+  console.log(processToEdit)
 
-  useEffect(() => {
-    // setLoading(true);
-    // ProcessoService.buscaProcesso(id).then((response) => {
+  const { getEndpoint, deleteEndpoint } = useAxios();
+
+  setTimeout(() => {
     setLoading(false);
-    //   setProcess(response);
-    // });
-  }, [id]);
+  }, 1500);
 
   const removeProcess = () => {
-    
-    // ProcessoService.deletaProcesso(id)
-    //   .then(() => {
-      //     ProcessoService.buscaProcessos().then((response) => {
-        //       setProcessos(response);
-        //     });
-        //   })
-        //   .then(() =>
-        // setDetail({
-          //   processClicked: undefined,
-          //   appears: false,
-          // });
-          //   );
-    setOpenMessage(true);
+    deleteEndpoint(`/processos/${processToEdit.id}`).then(() => {
+      setDetail({
+        processClicked: undefined,
+        appears: false,
+      });
+      setOpenMessage(true);
+      getEndpoint(`/processos`).then((response) => setProcessos(response));
+    })
   };
 
   return (
@@ -98,17 +89,23 @@ export function ProcessDetail({ id, setDetail, setOpen, setProcessos }) {
             ) : (
               <>
                 <ProcessNumberStyled>
-                  <TitleStyled variant="h3">Processo</TitleStyled>
-                  <Typography variant="h2">{process?.nuProcesso}</Typography>
+                  <TitleStyled variant="h3">Nº do Processo</TitleStyled>
+                  <Typography>{processToEdit?.nuProcesso}</Typography>
+                </ProcessNumberStyled>
+
+                <ProcessNumberStyled>
+                  <TitleStyled variant="h3">Ano</TitleStyled>
+                  <Typography>{processToEdit?.nuAno}</Typography>
                 </ProcessNumberStyled>
 
                 <div>
-                  <TitleStyled variant="h3">Data</TitleStyled>
-                  <Typography variant="h2">{process?.entrada}</Typography>
+                  <TitleStyled variant="h3">Órgão/Setor</TitleStyled>
+                  <Typography>{processToEdit?.sgOrgaoSetor?.toUpperCase()}</Typography>
                 </div>
+
                 <SubjectStyled>
                   <TitleStyled variant="h3">Assunto</TitleStyled>
-                  <Typography variant="h2">{process?.cdAssunto?.descricao}</Typography>
+                  <Typography>{processToEdit?.cdAssunto?.descricao}</Typography>
                 </SubjectStyled>
               </>
             )}
@@ -119,7 +116,7 @@ export function ProcessDetail({ id, setDetail, setOpen, setProcessos }) {
           <DivStyled>
             <TitleStyled variant="h3">Interessado</TitleStyled>
             <InterestedStyled>
-              <Typography>{process?.cdInteressado?.nmInteressado}</Typography>
+              <Typography>{processToEdit?.cdInteressado?.nmInteressado}</Typography>
             </InterestedStyled>
           </DivStyled>
         )}
@@ -129,7 +126,7 @@ export function ProcessDetail({ id, setDetail, setOpen, setProcessos }) {
             {loading ? <Skeleton animation="wave" /> : "Descrição"}
           </TitleStyled>
           <Typography>
-            {loading ? <Skeleton animation="wave" /> : process?.descricao}
+            {loading ? <Skeleton animation="wave" /> : processToEdit?.descricao}
           </Typography>
         </div>
 

@@ -36,7 +36,7 @@ export const useAxios = () => {
 
 	const postEndpoint = async (path, data) => {
 		try {
-			const response = await axiosInstance?.current?.post(path, data); // JSON.stringfy
+			const response = await axiosInstance?.current?.post(path, data);
 			return response.data;
 		} catch (error) {
 			console.error(error);
@@ -45,7 +45,7 @@ export const useAxios = () => {
 
 	const putEndpoint = async (path, data) => {
 		try {
-			await axiosInstance?.current?.put(path, data); // JSON.stringfy
+			await axiosInstance?.current?.put(path, data);
 		} catch (error) {
 			console.error(error);
 		}
@@ -59,13 +59,10 @@ export const useAxios = () => {
 		}
 	};
 
-	// return (
-	//   !!axiosInstance.current &&
 	return {
 		getEndpoint,
 		postEndpoint,
 		putEndpoint,
 		deleteEndpoint,
 	};
-	// );
 };
