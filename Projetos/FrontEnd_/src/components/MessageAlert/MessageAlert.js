@@ -21,7 +21,7 @@ export function MessageAlert({
         onClose={() => setOpenMessage(false)}
         severity={severity ? severity : "success"}
       >
-        {message}.
+        {message}
       </Alert>
     </Snackbar>
   );
