@@ -160,7 +160,7 @@ export function CreateEditProcess({ open, setOpen, processToEdit, setProcessos, 
 				</Formik>
 			</Dialog>
 
-			<MessageAlert alert={alert} setAlert={setAlert} message="Processo cadastrado com sucesso!" />
+			<MessageAlert openMessage={alert} setOpenMessage={setAlert} message="Processo cadastrado com sucesso!" />
 		</>
 	);
 }

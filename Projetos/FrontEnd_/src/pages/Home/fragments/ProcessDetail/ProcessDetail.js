@@ -41,8 +41,10 @@ export function ProcessDetail({ setDetail, setOpen, setProcessos, processToEdit 
         appears: false,
       });
       setOpenMessage(true);
-      getEndpoint(`/processos`).then((response) => setProcessos(response));
     })
+    getEndpoint(`/processos`).then((response) => {
+      setProcessos(response)
+    });
   };
 
   return (
@@ -153,6 +155,7 @@ export function ProcessDetail({ setDetail, setOpen, setProcessos, processToEdit 
         setOpenMessage={setOpenMessage}
         message="Processo deletado com sucesso!"
       />
+      
 
       <AlertDialog
         openAlert={openAlert}

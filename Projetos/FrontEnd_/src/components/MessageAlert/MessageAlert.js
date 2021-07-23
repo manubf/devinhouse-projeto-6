@@ -10,6 +10,7 @@ export function MessageAlert({
   setOpenMessage,
   message,
   severity,
+  
 }) {
   return (
     <Snackbar

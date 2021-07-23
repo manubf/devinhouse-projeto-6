@@ -1,5 +1,5 @@
 import { styled } from "@material-ui/core/styles";
-import { Paper, InputBase, IconButton, Typography } from "@material-ui/core"
+import { Paper, InputBase, IconButton, Typography, Button } from "@material-ui/core"
 
 export const PaperStyled = styled(Paper)(({ theme }) => ({
   display: "flex",
@@ -62,4 +62,9 @@ export const TopStyled = styled('div')(({ theme }) => ({
     width: '100%',
     flexWrap: 'nowrap',
   },
+}));
+
+export const ButtonStyled = styled(Button)(({ theme }) => ({
+  marginLeft: theme.spacing(1),
+  
 }));

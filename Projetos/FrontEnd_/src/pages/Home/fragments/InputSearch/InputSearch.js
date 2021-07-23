@@ -8,11 +8,12 @@ import {
   TextStyled,
   TopStyled,
   AutocompleteWrapper,
+  ButtonStyled
 } from "./InputSearch.styles";
 
 import { useAxios } from "../../../../utils/hooks";
 
-export function InputSearch({ setProcessos, setSearchClicked }) {
+export function InputSearch({ setProcessos, setSearchClicked, setLoading, setDetail }) {
   const [researchBySubect, setResearchBySubect] = useState(false);
   const [inputSearch, setInputSearch] = useState(undefined);
   const [input, setInput] = useState(researchBySubect[0]);
@@ -28,18 +29,39 @@ export function InputSearch({ setProcessos, setSearchClicked }) {
 
   const handleclick = () => {
     setSearchClicked(true);
+    setLoading(true)
     if (researchBySubect) {
-      console.log("assunto");
-      getEndpoint(`/processos?cd_assunto_id=${input}`).then((response) =>
+      getEndpoint(`/processos?cd_assunto_id=${input}`).then((response) => {
         setProcessos(response)
+        setLoading(false)
+      }
       );
     } else {
-      console.log("número");
-      getEndpoint(`/processos?nu_processo=${inputSearch}`).then((response) =>
+      getEndpoint(`/processos?nu_processo=${inputSearch}`).then((response) => {
         setProcessos(response)
+        setLoading(false)
+      }
       );
     }
+    setDetail({
+      processClicked: undefined,
+      appears: false,
+    });
   };
+
+  const handleClickClean = () => {
+    setLoading(true)
+    setDetail({
+      processClicked: undefined,
+      appears: false,
+    });
+    getEndpoint(`/processos`).then((response) => {
+      setProcessos(response)
+      setLoading(false)
+      setInputSearch(undefined)
+    }
+    );
+  }
 
   return (
     <TopStyled>
@@ -49,7 +71,10 @@ export function InputSearch({ setProcessos, setSearchClicked }) {
         <Typography>Número</Typography>
         <Switch
           checked={researchBySubect}
-          onChange={(e) => setResearchBySubect(e.target.checked)}
+          onChange={(e) => {
+            setResearchBySubect(e.target.checked)
+            setInputSearch(undefined)
+          }}
           name="type of research"
           color="primary"
         />
@@ -95,9 +120,13 @@ export function InputSearch({ setProcessos, setSearchClicked }) {
         </PaperStyled>
       )}
 
-      <Button onClick={handleclick} variant="outlined">
+      <Button onClick={handleclick} variant="contained" color="primary">
         Pesquisar
       </Button>
+
+      <ButtonStyled onClick={handleClickClean} variant="outlined">
+        Limpar
+      </ButtonStyled>
     </TopStyled>
   );
 }

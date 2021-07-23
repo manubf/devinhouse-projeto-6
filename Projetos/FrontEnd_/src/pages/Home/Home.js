@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 
 import { useAxios } from "../../utils/hooks";
-// import ProcessoService from "../../service";
 
 import {
 	ContentWrapper,
@@ -56,12 +55,13 @@ export function Home() {
 						});
 						setOpen(true);
 					}}
+					color="primary"
 				>
 					Novo
 				</ButtonStyled>
 			</TopStyled>
 
-			<InputSearch setProcessos={setProcessos} setSearchClicked={setSearchClicked} />
+			<InputSearch setProcessos={setProcessos} setSearchClicked={setSearchClicked} setLoading={setLoading} setDetail={setDetail} />
 
 			{!searchClicked && processos?.length === 0 && (
 				<MessageWrapper>
