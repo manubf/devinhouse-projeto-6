@@ -15,4 +15,15 @@ describe("Login", () => {
     // Verificar se redirecionou para a /home novamente
     cy.url().should("include", "/home");
   });
+
+  it("efetuar logout", () => {
+    //Acessar a página
+    cy.visit("/home");
+
+    //Clicar no botão sair
+    cy.get("button").contains("SAIR").click();
+
+    // Verificar se redirecionou para a /home novamente
+    cy.url().should("include", "/home");
+  });
 });
