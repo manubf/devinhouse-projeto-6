@@ -1,7 +1,13 @@
 # DEVinHouse Projeto 06
 
 Repositório para realização do projeto 6 do DEVinHouse
-
+  
+### Orientações:
+A implementação do desafio se encontra na branch grupo03, e os usuários cadastrados e autenticados são: 
+user:"user" password:"123"
+user:"fulano" password:"123"
+user:"beltrano password:"456"
+user:"sicrano" password:"789"
 ### Descrição
 
 Você está participando de um processo seletivo para ingressar numa vaga de programador em uma grande empresa de TI. Uma das etapas consiste na implementação de autenticação e Logging em uma API RESTFULL, além do desenvolvimento de um projeto Front-end para consumir os dados da API.
