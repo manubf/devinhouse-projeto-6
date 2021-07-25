@@ -1,6 +1,14 @@
 # DEVinHouse Projeto 06
 
-Repositório para realização do projeto 6 do DEVinHouse
+Repositório para realização do projeto 6 do DEVinHouse  
+  
+### Orientações:
+A implementação do desafio se encontra na branch grupo03, e os usuários cadastrados e autenticados são: 
+user:"user" password:"123"
+user:"fulano" password:"123"
+user:"beltrano password:"456"
+user:"sicrano" password:"789"
+
 
 ### Descrição
 
